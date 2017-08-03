@@ -5,7 +5,6 @@
  */
 package cefetmg.inf.server;
 
-import cefetmg.inf.calculadora.AdaptadorCalculadora;
 import java.net.ServerSocket;
 import java.net.Socket;
 
