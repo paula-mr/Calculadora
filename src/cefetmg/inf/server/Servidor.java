@@ -5,7 +5,6 @@
  */
 package cefetmg.inf.server;
 
-import cefetmg.inf.calculadora.AdaptadorCalculadora;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -21,16 +20,19 @@ public class Servidor {
         while (true) {
             try {
                 ServerSocket s = new ServerSocket(2223);
-
+                System.out.println("Aguardando conexão");
+                
                 Socket p = s.accept();
+                System.out.println("Conexão estabelecida");
                 
                 AdaptadorCalculadora adapter = new AdaptadorCalculadora(p);
                 adapter.realizaOperacao();
                 
                 s.close();
                 p.close();
+                System.out.println("Conexão fechada");
             } catch (Exception e) {
-                System.out.println("Ocorreu um erro! \n" + e.getMessage());
+                System.out.println("Ocorreu um erro no servidor! \n" + e.getMessage());
             }
         }
     }

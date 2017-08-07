@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Aluno/Desktop/Calculadora-master/Calculadora-master/src/cefetmg/inf/calculadora/AdaptadorCalculadora.java</file>
-            <file>file:/C:/Users/Aluno/Desktop/Calculadora-master/Calculadora-master/src/cefetmg/inf/calculadora/InterfaceCalculadora.java</file>
-            <file>file:/C:/Users/Aluno/Desktop/Calculadora-master/Calculadora-master/src/cefetmg/inf/proxy/ProxyCalculadora.java</file>
-            <file>file:/C:/Users/Aluno/Desktop/Calculadora-master/Calculadora-master/src/cefetmg/inf/calculadora/Calculadora.java</file>
-            <file>file:/C:/Users/Aluno/Desktop/Calculadora-master/Calculadora-master/src/cefetmg/inf/server/Cliente.java</file>
-            <file>file:/C:/Users/Aluno/Desktop/Calculadora-master/Calculadora-master/src/cefetmg/inf/server/Servidor.java</file>
+            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/client/ProxyCalculadora.java</file>
+            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/calculadora/InterfaceCalculadora.java</file>
+            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/server/Servidor.java</file>
+            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/client/Cliente.java</file>
+            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/calculadora/Calculadora.java</file>
+            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/server/AdaptadorCalculadora.java</file>
         </group>
     </open-files>
 </project-private>

@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cefetmg.inf.server;
+package cefetmg.inf.client;
 
-import cefetmg.inf.proxy.ProxyCalculadora;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -27,7 +26,14 @@ public class Cliente {
             Socket c = proxy.getSocket();
             
             Scanner scan = new Scanner(System.in);
-            System.out.println("Digite a operação: ");
+            System.out.println("Selecione dentre as operações: " +
+                                "\n + para adição" +
+                                "\n - para subtração" +
+                                "\n x para multiplicação" +
+                                "\n / para divisão" +
+                                "\n b para resolução de uma equação de segundo grau (bhaskara)" +
+                                "\n m para multiplicação de matriz" +
+                                "\n Operação selecionada: ");
             char op = scan.next().charAt(0);
             
             proxy.selecionaOperacao(op);
@@ -54,8 +60,8 @@ public class Cliente {
                     System.out.println();
                     double[][] matriz = (double[][]) resultado;
                     for (int i = 0; i < matriz.length; i++) {
-                        for (int j = 0; j < matriz[1].length; j++) {
-                            System.out.println(matriz[i][j]);
+                        for (int j = 0; j < matriz[0].length; j++) {
+                            System.out.print(matriz[i][j] + " ");
                         }
                         System.out.println();
                     }
@@ -65,7 +71,7 @@ public class Cliente {
             c.close();
         }
         catch (Exception e) {
-            System.out.println("Ocorreu um erro! \n" + e.getMessage());
+            System.out.println("Ocorreu um erro no cliente! \n" + e.getMessage());
         }
     }
         

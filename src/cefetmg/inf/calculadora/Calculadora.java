@@ -37,7 +37,7 @@ public class Calculadora implements InterfaceCalculadora {
     public double[][] multMatriz(double[][] matriz1, double[][] matriz2) throws ExcecaoMath {
         double[][] matrizResult = new double[matriz1.length][matriz2[0].length];
         
-        if (matriz1.length != matriz2[1].length) {
+        if (matriz1[0].length != matriz2.length) {
             throw new ExcecaoMath("Condição de multiplicação de matrizes não respeitada!");
         }
         
