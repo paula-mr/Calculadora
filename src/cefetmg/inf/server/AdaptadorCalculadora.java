@@ -17,7 +17,7 @@ import java.net.Socket;
  *
  * @author Paula Ribeiro
  */
-public class AdaptadorCalculadora {
+public class AdaptadorCalculadora implements Runnable {
     
     private Socket socket;
     private InterfaceCalculadora calculadora;
@@ -27,58 +27,71 @@ public class AdaptadorCalculadora {
         this.calculadora = new Calculadora();
     }
     
-    public void realizaOperacao() throws IOException, ExcecaoMath, ClassNotFoundException {
+    @Override
+    public void run() {
         
-        ObjectInputStream entrada = new ObjectInputStream (socket.getInputStream());
-        char op = entrada.readChar();
-        
-        double num1, num2, a, b, c;
-        Object resultado = null;
-        double[][] matriz1, matriz2;
-        
-        switch (op) {
-            case '+':
-                num1 = entrada.readDouble();
-                num2 = entrada.readDouble();
-                resultado = calculadora.adicao(num1, num2);
-                break;
-                
-            case '-':
-                num1 = entrada.readDouble();
-                num2 = entrada.readDouble();
-                resultado = calculadora.subtracao(num1, num2);
-                break;
-                
-            case '/':
-                num1 = entrada.readDouble();
-                num2 = entrada.readDouble();
-                resultado = calculadora.divisao(num1, num2);
-                break;
-                
-            case 'x':
-                num1 = entrada.readDouble();
-                num2 = entrada.readDouble();
-                resultado = calculadora.multiplicacao(num1, num2);                         
-                break;
+        ObjectInputStream entrada = null;
+        try {
+            entrada = new ObjectInputStream (socket.getInputStream());
+            char op = entrada.readChar();
+            double num1, num2, a, b, c;
+            Object resultado = null;
+            double[][] matriz1, matriz2;
+            switch (op) {
+                case '+':
+                    num1 = entrada.readDouble();
+                    num2 = entrada.readDouble();
+                    resultado = calculadora.adicao(num1, num2);
+                    break;
+                    
+                case '-':
+                    num1 = entrada.readDouble();
+                    num2 = entrada.readDouble();
+                    resultado = calculadora.subtracao(num1, num2);
+                    break;
+                    
+                case '/':
+                    num1 = entrada.readDouble();
+                    num2 = entrada.readDouble();
+                    resultado = calculadora.divisao(num1, num2);
+                    break;
+                    
+                case 'x':
+                    num1 = entrada.readDouble();
+                    num2 = entrada.readDouble();
+                    resultado = calculadora.multiplicacao(num1, num2);
+                    break;
+                    
+                case 'b':
+                    a = entrada.readDouble();
+                    b = entrada.readDouble();
+                    c = entrada.readDouble();
+                    resultado = calculadora.calcBhaskara(a, b, c);
+                    break;
+                    
+                case 'm':
+                    matriz1 = (double[][]) entrada.readObject();
+                    matriz2 = (double[][]) entrada.readObject();
+                    resultado = calculadora.multMatriz(matriz1, matriz2);
+                    break; 
+            }   
             
-            case 'b':
-                a = entrada.readDouble();
-                b = entrada.readDouble();
-                c = entrada.readDouble();
-                resultado = calculadora.calcBhaskara(a, b, c);
-                break;
-                
-            case 'm':
-                matriz1 = (double[][]) entrada.readObject();
-                matriz2 = (double[][]) entrada.readObject();
-                resultado = calculadora.multMatriz(matriz1, matriz2);
-                break; 
+            ObjectOutputStream saida = new ObjectOutputStream(socket.getOutputStream());
+            saida.writeObject(resultado);
+            saida.flush();
+            
+            socket.close();
+            System.out.println("Conexão fechada");
+            
+        } catch (IOException | ExcecaoMath | ClassNotFoundException ex) {
+            System.out.println("Ocorreu um erro!\n" + ex.getMessage());
+        } finally {
+            try {
+                entrada.close();
+            } catch (IOException ex) {
+                System.out.println("Ocorreu um erro!\n" + ex.getMessage());
+            }
         }
-        
-        ObjectOutputStream saida = new ObjectOutputStream(socket.getOutputStream());
-        
-        saida.writeObject(resultado);
-        saida.flush();
         
     }
     

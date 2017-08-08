@@ -26,13 +26,11 @@ public class Servidor {
                 System.out.println("Conexão estabelecida");
                 
                 AdaptadorCalculadora adapter = new AdaptadorCalculadora(p);
-                adapter.realizaOperacao();
+                new Thread(adapter).start();
                 
                 s.close();
-                p.close();
-                System.out.println("Conexão fechada");
             } catch (Exception e) {
-                System.out.println("Ocorreu um erro no servidor! \n" + e.getMessage());
+                System.out.println("Ocorreu um erro! \n" + e.getMessage());
             }
         }
     }

@@ -71,7 +71,7 @@ public class Cliente {
             c.close();
         }
         catch (Exception e) {
-            System.out.println("Ocorreu um erro no cliente! \n" + e.getMessage());
+            System.out.println("Ocorreu um erro! \n" + e.getMessage());
         }
     }
         
