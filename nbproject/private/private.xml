@@ -2,13 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/client/ProxyCalculadora.java</file>
-            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/calculadora/InterfaceCalculadora.java</file>
-            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/server/Servidor.java</file>
-            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/client/Cliente.java</file>
-            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/calculadora/Calculadora.java</file>
-            <file>file:/C:/Users/pauli/Documents/NetBeansProjects/Calculadora/src/cefetmg/inf/server/AdaptadorCalculadora.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -85,7 +85,9 @@ public class AdaptadorCalculadora implements Runnable {
             
         } catch (IOException | ExcecaoMath | ClassNotFoundException ex) {
             System.out.println("Ocorreu um erro!\n" + ex.getMessage());
-        } finally {
+        } 
+        
+        finally {
             try {
                 entrada.close();
             } catch (IOException ex) {

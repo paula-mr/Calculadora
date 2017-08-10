@@ -5,112 +5,31 @@
  */
 package cefetmg.inf.client;
 
+import cefetmg.inf.calculadora.InterfaceCalculadora;
+import cefetmg.inf.excecao.ExcecaoMath;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Paula Ribeiro
  */
-public class ProxyCalculadora {
+public class ProxyCalculadora implements InterfaceCalculadora {
 
     Socket socket;
+    ObjectOutputStream saida;
+    
     
     public ProxyCalculadora(String IPServidor, int PortaServidor) throws IOException {
         this.socket = new Socket (IPServidor, PortaServidor);
+        this.saida = new ObjectOutputStream(socket.getOutputStream());
     }
-    
-    public void selecionaOperacao(char op) throws IOException {
         
-        Scanner scan = new Scanner(System.in);
-        
-        ObjectOutputStream saida = new ObjectOutputStream(socket.getOutputStream());
-        saida.writeChar(op);
-        
-        switch (op) {
-            case '+':               
-            case '-':
-            case '/':
-            case 'x':
-                double num1;
-                double num2;
-        
-                System.out.println("Digite o primeiro número: ");
-                num1 = scan.nextDouble();
-            
-                System.out.println("Digite o primeiro número: ");
-                num2 = scan.nextDouble();   
-                
-                saida.writeDouble(num1);
-                saida.writeDouble(num2);
-                
-                break;
-            
-            case 'b':
-                double a;
-                double b;
-                double c;        
-        
-                System.out.println("Digite A: ");
-                a = scan.nextDouble();
-            
-                System.out.println("Digite B: ");
-                b = scan.nextDouble(); 
-                
-                System.out.println("Digite C: ");
-                c = scan.nextDouble(); 
-                
-                saida.writeDouble(a);
-                saida.writeDouble(b);
-                saida.writeDouble(c);
-                
-                break;
-                
-            case 'm':
-                int i1 = 0, i2 =0 , j1 = 0, j2 = 0;
-                
-                System.out.println("Digite a quantidade de linhas da primeira matriz: ");
-                i1 = scan.nextInt();
-            
-                System.out.println("Digite a quantidade de colunas da primeira matriz: ");
-                j1 = scan.nextInt(); 
-                
-                System.out.println("Digite a quantidade de linhas da segunda matriz: ");
-                i2 = scan.nextInt();
-            
-                System.out.println("Digite a quantidade de colunas da segunda matriz: ");
-                j2 = scan.nextInt(); 
-                
-                double[][] matriz1 = new double[i1][j1];
-                double[][] matriz2 = new double[i2][j2];
-                
-                System.out.println("Digite os números que compõem a primeira matriz: ");
-                for (int i = 0; i < i1; i++) {
-                    for (int j = 0; j < j1; j++) {
-                        matriz1[i][j] = scan.nextDouble(); 
-                    }
-                }
-                saida.writeObject(matriz1);
-                
-                System.out.println("Digite os números que compõem a segunda matriz: ");
-                for (int i = 0; i < i2; i++) {
-                    for (int j = 0; j < j2; j++) {
-                        matriz2[i][j] = scan.nextDouble(); 
-                   }
-                }
-                saida.writeObject(matriz2);
-                
-                break; 
-        }
-        
-        saida.flush();
-                
-    }
-    
-    public Object recebeResultado() throws IOException, ClassNotFoundException {
+    private Object recebeResultado() throws IOException, ClassNotFoundException {
         ObjectInputStream entrada = new ObjectInputStream (socket.getInputStream());
         Object resultado = entrada.readObject();
         return resultado;
@@ -123,5 +42,109 @@ public class ProxyCalculadora {
     public void setSocket(Socket socket) {
         this.socket = socket;
     }   
+
+    @Override
+    public double adicao(double num1, double num2) {
+        
+        double result = 0;
+        try {
+            saida.writeChar('+');
+            saida.writeDouble(num1);
+            saida.writeDouble(num2);
+            saida.flush();
+            result = (double) this.recebeResultado();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Ocorreu um erro! \n" + ex.getMessage());
+        }
+        finally {
+            return result;
+        }
+    }
+
+    @Override
+    public double subtracao(double num1, double num2) {
+        double result = 0;
+        try {
+            saida.writeChar('-');
+            saida.writeDouble(num1);
+            saida.writeDouble(num2);
+            saida.flush();
+            result = (double) this.recebeResultado();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Ocorreu um erro! \n" + ex.getMessage());
+        }
+        finally {
+            return result;
+        }
+    }
+
+    @Override
+    public double multiplicacao(double num1, double num2) {
+        double result = 0;
+        try {
+            saida.writeChar('x');
+            saida.writeDouble(num1);
+            saida.writeDouble(num2);
+            saida.flush();
+            result = (double) this.recebeResultado();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Ocorreu um erro! \n" + ex.getMessage());
+        }
+        finally {
+            return result;
+        }
+    }
+
+    @Override
+    public double divisao(double num1, double num2) {
+        double result = 0;
+        try {
+            saida.writeChar('/');
+            saida.writeDouble(num1);
+            saida.writeDouble(num2);
+            saida.flush();
+            result = (double) this.recebeResultado();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Ocorreu um erro! \n" + ex.getMessage());
+        }
+        finally {
+            return result;
+        }
+    }
+
+    @Override
+    public double[][] multMatriz(double[][] matriz1, double[][] matriz2) throws ExcecaoMath {
+        double[][] result = new double[matriz1.length][matriz2[0].length];
+        try {
+            saida.writeChar('m');
+            saida.writeObject(matriz1);
+            saida.writeObject(matriz2);
+            saida.flush();
+            result = (double[][]) this.recebeResultado();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Ocorreu um erro! \n" + ex.getMessage());
+        }
+        finally {
+            return result;
+        }
+    }
+
+    @Override
+    public double[] calcBhaskara(double a, double b, double c) throws ExcecaoMath {
+        double[] result = new double[2];
+        try {
+            saida.writeChar('b');
+            saida.writeDouble(a);
+            saida.writeDouble(b);
+            saida.writeDouble(c);
+            saida.flush();
+            result = (double[]) this.recebeResultado();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Ocorreu um erro! \n" + ex.getMessage());
+        }
+        finally {
+            return result;
+        }
+    }
     
 }
