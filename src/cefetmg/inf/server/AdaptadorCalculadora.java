@@ -6,12 +6,7 @@
 package cefetmg.inf.server;
 
 import cefetmg.inf.calculadora.Calculadora;
-import cefetmg.inf.calculadora.InterfaceCalculadora;
-import cefetmg.inf.excecao.ExcecaoMath;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import cefetmg.inf.util.ExcecaoConnection;
 
 /**
  *
@@ -19,82 +14,105 @@ import java.net.Socket;
  */
 public class AdaptadorCalculadora implements Runnable {
     
-    private Socket socket;
-    private InterfaceCalculadora calculadora;
+    private Connection con;
+    private Calculadora calculadora;
+    private char op;
+    private int port;
+    private String ip;
+    private double x;
+    private double y;
     
-    public AdaptadorCalculadora(Socket socket) {
-        this.socket = socket;
-        this.calculadora = new Calculadora();
+    public AdaptadorCalculadora(int port, String ip, double x, double y, char op) {
+        calculadora = new Calculadora();
+        this.x=x;
+        this.y=y;
+        this.op=op;
+        this.ip=ip;
+        this.port=port;
     }
-    
+
+    public Connection getCon() {
+        return con;
+    }
+
+    public void setCon(Connection con) {
+        this.con = con;
+    }
+
+    public Calculadora getCalculadora() {
+        return calculadora;
+    }
+
+    public void setCalculadora(Calculadora calculadora) {
+        this.calculadora = calculadora;
+    }
+
+    public char getOp() {
+        return op;
+    }
+
+    public void setOp(char op) {
+        this.op = op;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+       
     @Override
     public void run() {
-        
-        ObjectInputStream entrada = null;
         try {
-            entrada = new ObjectInputStream (socket.getInputStream());
-            char op = entrada.readChar();
-            double num1, num2, a, b, c;
-            Object resultado = null;
-            double[][] matriz1, matriz2;
             switch (op) {
                 case '+':
-                    num1 = entrada.readDouble();
-                    num2 = entrada.readDouble();
-                    resultado = calculadora.adicao(num1, num2);
+                    con.sendData(calculadora.adicao(x, y), ip, port);
                     break;
                     
                 case '-':
-                    num1 = entrada.readDouble();
-                    num2 = entrada.readDouble();
-                    resultado = calculadora.subtracao(num1, num2);
-                    break;
-                    
-                case '/':
-                    num1 = entrada.readDouble();
-                    num2 = entrada.readDouble();
-                    resultado = calculadora.divisao(num1, num2);
+                    con.sendData(calculadora.subtracao(x, y), ip, port);
                     break;
                     
                 case 'x':
-                    num1 = entrada.readDouble();
-                    num2 = entrada.readDouble();
-                    resultado = calculadora.multiplicacao(num1, num2);
+                    con.sendData(calculadora.multiplicacao(x, y), ip, port);
                     break;
                     
-                case 'b':
-                    a = entrada.readDouble();
-                    b = entrada.readDouble();
-                    c = entrada.readDouble();
-                    resultado = calculadora.calcBhaskara(a, b, c);
+                case '/':
+                    con.sendData(calculadora.divisao(x, y), ip, port);
                     break;
-                    
-                case 'm':
-                    matriz1 = (double[][]) entrada.readObject();
-                    matriz2 = (double[][]) entrada.readObject();
-                    resultado = calculadora.multMatriz(matriz1, matriz2);
-                    break; 
-            }   
-            
-            ObjectOutputStream saida = new ObjectOutputStream(socket.getOutputStream());
-            saida.writeObject(resultado);
-            saida.flush();
-            
-            socket.close();
-            System.out.println("Conexão fechada");
-            
-        } catch (IOException | ExcecaoMath | ClassNotFoundException ex) {
-            System.out.println("Ocorreu um erro!\n" + ex.getMessage());
-        } 
-        
-        finally {
-            try {
-                entrada.close();
-            } catch (IOException ex) {
-                System.out.println("Ocorreu um erro!\n" + ex.getMessage());
             }
-        }
-        
+        } 
+        catch (ExcecaoConnection ex) {
+            System.out.println("Ocorreu um erro! \n");            
+            ex.printStackTrace();
+        } 
+               
     }
     
 }

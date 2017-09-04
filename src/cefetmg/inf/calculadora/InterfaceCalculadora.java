@@ -5,8 +5,6 @@
  */
 package cefetmg.inf.calculadora;
 
-import cefetmg.inf.excecao.ExcecaoMath;
-
 /**
  *
  * @author Paula Ribeiro
@@ -16,6 +14,4 @@ public interface InterfaceCalculadora {
     public double subtracao (double num1, double num2);
     public double multiplicacao (double num1, double num2);
     public double divisao (double num1, double num2);
-    public double[][] multMatriz (double[][] matriz1, double[][] matriz2) throws ExcecaoMath;
-    public double[] calcBhaskara (double a, double b, double c) throws ExcecaoMath;
 }
